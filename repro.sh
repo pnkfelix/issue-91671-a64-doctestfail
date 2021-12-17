@@ -1,3 +1,5 @@
+#!/bin/sh
+
 NIGHTLY=nightly-2021-10-14
 
 rustc +$NIGHTLY --crate-name rayon_core rayon-core/src/lib.rs --error-format=json --json=diagnostic-rendered-ansi,artifacts --crate-type lib --emit=dep-info,metadata,link -C opt-level=3 -C linker-plugin-lto -C metadata=42766ff5a1612191 -C extra-filename=-42766ff5a1612191 --out-dir /Users/pnkfelix/Dev/Rust/a64_doctestfail/target/release/deps -L dependency=/Users/pnkfelix/Dev/Rust/a64_doctestfail/target/release/deps --cap-lints=allow
