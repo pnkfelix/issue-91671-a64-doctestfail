@@ -1,0 +1,6 @@
+#!/bin/bash
+
+ARGS="+nightly-2021-10-13 $@"
+echo rustc $ARGS
+exec rustc $ARGS
+
