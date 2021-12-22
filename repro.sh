@@ -1,6 +1,6 @@
 #!/bin/sh
 
-NIGHTLY=nightly-2021-08-21
+NIGHTLY=nightly-2021-08-22
 
 rustup update $NIGHTLY
 
