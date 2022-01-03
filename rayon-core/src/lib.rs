@@ -16,19 +16,17 @@ mod std {
     #[lang = "eh_personality"]
     extern "C" fn eh_personality() {}
 
-struct FakeAllocator;
+    struct FakeAllocator;
 
-#[global_allocator]
-static FAKE_ALLOC: FakeAllocator = FakeAllocator;
+    #[global_allocator]
+    static FAKE_ALLOC: FakeAllocator = FakeAllocator;
 
-use alloc::alloc::{GlobalAlloc, Layout};
+    use alloc::alloc::{GlobalAlloc, Layout};
 
-unsafe impl GlobalAlloc for FakeAllocator {
-    unsafe fn alloc(&self, _: Layout) -> *mut u8 { loop { } }
-    unsafe fn dealloc(&self, _: *mut u8, _: Layout) { loop { } }
-}
-
-
+    unsafe impl GlobalAlloc for FakeAllocator {
+        unsafe fn alloc(&self, _: Layout) -> *mut u8 { loop { } }
+        unsafe fn dealloc(&self, _: *mut u8, _: Layout) { loop { } }
+    }
 
     #[alloc_error_handler]
     fn my_example_handler(layout: core::alloc::Layout) -> ! {
@@ -46,17 +44,17 @@ unsafe impl GlobalAlloc for FakeAllocator {
             SimpleMessage(ErrorKind, &'static &'static str),
         }
 
-impl fmt::Debug for Repr {
-    fn fmt(&self, fmt: &mut fmt::Formatter<'_>) -> fmt::Result {
-        loop { }
-    }
-}
+        impl fmt::Debug for Repr {
+            fn fmt(&self, fmt: &mut fmt::Formatter<'_>) -> fmt::Result {
+                loop { }
+            }
+        }
 
-#[derive(Clone, Copy, Debug, Eq, Hash, Ord, PartialEq, PartialOrd)]
-#[non_exhaustive]
-pub enum ErrorKind {
-    Other,
-}
+        #[derive(Clone, Copy, Debug, Eq, Hash, Ord, PartialEq, PartialOrd)]
+        #[non_exhaustive]
+        pub enum ErrorKind {
+            Other,
+        }
         impl core::fmt::Debug for Error {
             fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
                 core::fmt::Debug::fmt(&self.repr, f)
