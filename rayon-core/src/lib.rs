@@ -57,7 +57,7 @@ mod std {
         }
         impl core::fmt::Debug for Error {
             fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
-                core::fmt::Debug::fmt(&self.repr, f)
+                loop { }
             }
         }
     }
