@@ -50,7 +50,7 @@ mod std {
         }
     }
     pub(crate) mod error {
-        pub trait Error: core::fmt::Debug + core::fmt::Display {
+        pub trait Error {
         }
     }
 }
@@ -81,4 +81,4 @@ pub struct BuildError {
     kind: std::io::Error,
 }
 
-pub fn build() -> Result<tp::Pool, Box<dyn std::error::Error + 'static>> { loop { } }
+pub fn build<'a>(_: &'a ()) -> Result<tp::Pool, &'a dyn std::error::Error> { loop { } }
