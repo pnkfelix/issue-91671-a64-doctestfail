@@ -1,5 +1,7 @@
 #!/bin/sh
 
+REPRO_SUFFIX=2
+
 NIGHTLY=nightly-2021-08-22
 
 # END_TARGET=aarch64-apple-darwin
@@ -29,10 +31,12 @@ $RUSTC --crate-name a64_doctestfail --edition=2018 src/lib.rs --crate-type lib -
 
 echo "BUILD DEMO"
 
-# rr record -w $RUSTC --crate-type bin --edition 2018 -o /tmp/rust_out -L dependency=$DEPS_DIR -L dependency=$DEPS_DIR --extern a64_doctestfail=$DEPS_DIR/liba64_doctestfail$A64_D_EXTRA_FILENAME.rlib --extern rayon_core=$DEPS_DIR/librayon_core$RAYON_EXTRA_FILENAME.rlib -Ccodegen-units=1 -C lto -Z unstable-options --target $END_TARGET --color never tests/demo.rs
-#$RUSTC --crate-type bin --edition 2018 -o /tmp/rust_out -L dependency=$DEPS_DIR -L dependency=$DEPS_DIR --extern a64_doctestfail=$DEPS_DIR/liba64_doctestfail$A64_D_EXTRA_FILENAME.rlib --extern rayon_core=$DEPS_DIR/librayon_core$RAYON_EXTRA_FILENAME.rlib -Ccodegen-units=1 -C lto -Z unstable-options --target $END_TARGET --color never tests/demo.rs -C llvm-args=-debug
-# $RUSTC --crate-type bin --edition 2018 -o /tmp/rust_out2 -L dependency=$DEPS_DIR -L dependency=$DEPS_DIR --extern a64_doctestfail=$DEPS_DIR/liba64_doctestfail$A64_D_EXTRA_FILENAME.rlib --extern rayon_core=$DEPS_DIR/librayon_core$RAYON_EXTRA_FILENAME.rlib -Ccodegen-units=1 -C lto -Z unstable-options --target $END_TARGET --color never tests/demo.rs -Z print-llvm-passes=yes
+# Some potential prefixes to remember
+# rr record -w
 
-$RUSTC --crate-type bin --edition 2018 -o /tmp/rust_out2 -L dependency=$DEPS_DIR -L dependency=$DEPS_DIR --extern a64_doctestfail=$DEPS_DIR/liba64_doctestfail$A64_D_EXTRA_FILENAME.rlib --extern rayon_core=$DEPS_DIR/librayon_core$RAYON_EXTRA_FILENAME.rlib -Ccodegen-units=1 -C lto -Z unstable-options --target $END_TARGET --color never tests/demo.rs # -C llvm-args=-debug-only=instruction-select,aarch64-isel
+# Some potential suffixes to remember
+# -C llvm-args=-debug
+# -Z print-llvm-passes=yes
+# -C llvm-args=-debug-only=instruction-select,aarch64-isel
 
-# $RUSTC --emit llvm-bc --crate-type bin --edition 2018 -o /tmp/rust_out -L dependency=$DEPS_DIR -L dependency=$DEPS_DIR --extern a64_doctestfail=$DEPS_DIR/liba64_doctestfail$A64_D_EXTRA_FILENAME.rlib --extern rayon_core=$DEPS_DIR/librayon_core$RAYON_EXTRA_FILENAME.rlib -Ccodegen-units=1 -C lto -Z unstable-options --target $END_TARGET --color never tests/demo.rs
+$RUSTC --crate-type bin --edition 2018 -o /tmp/rust_out$REPRO_SUFFIX -L dependency=$DEPS_DIR -L dependency=$DEPS_DIR --extern a64_doctestfail=$DEPS_DIR/liba64_doctestfail$A64_D_EXTRA_FILENAME.rlib --extern rayon_core=$DEPS_DIR/librayon_core$RAYON_EXTRA_FILENAME.rlib -Ccodegen-units=1 -C lto -Z unstable-options --target $END_TARGET --color never tests/demo.rs
