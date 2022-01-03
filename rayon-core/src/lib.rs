@@ -1,9 +1,20 @@
 #![feature(lang_items)]
 #![feature(alloc_error_handler)]
+#![feature(fundamental)]
+#![feature(ptr_internals)]
 #![no_std]
 
-extern crate alloc;
 use alloc::boxed::Box;
+
+mod alloc {
+    pub(crate) mod boxed {
+        use core::ptr::Unique;
+
+        pub struct Box<T: ?Sized>(Unique<T>);
+
+        impl<T> From<T> for Box<T> { fn from(t: T) -> Self { loop { } } }
+    }
+}
 
 mod std {
     use core::panic::PanicInfo;
@@ -15,23 +26,6 @@ mod std {
 
     #[lang = "eh_personality"]
     extern "C" fn eh_personality() {}
-
-    struct FakeAllocator;
-
-    #[global_allocator]
-    static FAKE_ALLOC: FakeAllocator = FakeAllocator;
-
-    use alloc::alloc::{GlobalAlloc, Layout};
-
-    unsafe impl GlobalAlloc for FakeAllocator {
-        unsafe fn alloc(&self, _: Layout) -> *mut u8 { loop { } }
-        unsafe fn dealloc(&self, _: *mut u8, _: Layout) { loop { } }
-    }
-
-    #[alloc_error_handler]
-    fn my_example_handler(layout: core::alloc::Layout) -> ! {
-        loop { }
-    }
 
     pub(crate) mod io {
         pub struct Error {
