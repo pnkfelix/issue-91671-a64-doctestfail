@@ -34,29 +34,17 @@ mod std {
     }
 
     pub(crate) mod io {
-        use crate::Box;
         pub use crate::alloc::fmt;
         pub struct Error {
             repr: Repr,
         }
         enum Repr {
             Os(i32),
-            SimpleMessage(ErrorKind, &'static &'static str),
+            SimpleMessage(i32, &'static &'static ()),
         }
 
         impl fmt::Debug for Repr {
             fn fmt(&self, fmt: &mut fmt::Formatter<'_>) -> fmt::Result {
-                loop { }
-            }
-        }
-
-        #[derive(Clone, Copy, Debug, Eq, Hash, Ord, PartialEq, PartialOrd)]
-        #[non_exhaustive]
-        pub enum ErrorKind {
-            Other,
-        }
-        impl core::fmt::Debug for Error {
-            fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
                 loop { }
             }
         }
