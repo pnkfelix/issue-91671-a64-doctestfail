@@ -1,5 +1,6 @@
 #![feature(start)]
-#![no_std]
+#![feature(no_core)]
+#![no_core]
 
 #[allow(unused_imports)] use a64_doctestfail;
 
