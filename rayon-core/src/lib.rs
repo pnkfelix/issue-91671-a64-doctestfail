@@ -42,12 +42,6 @@ mod std {
             Os(i32),
             SimpleMessage(i32, &'static &'static ()),
         }
-
-        impl fmt::Debug for Repr {
-            fn fmt(&self, fmt: &mut fmt::Formatter<'_>) -> fmt::Result {
-                loop { }
-            }
-        }
     }
     pub(crate) mod error {
         pub trait Error {
