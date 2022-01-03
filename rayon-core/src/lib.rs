@@ -34,7 +34,6 @@ mod std {
     }
 
     pub(crate) mod io {
-        pub use crate::alloc::fmt;
         pub struct Error {
             repr: Repr,
         }
