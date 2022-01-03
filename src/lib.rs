@@ -1,3 +1,5 @@
+#![no_std]
+
 // lib.rs
 
 extern crate rayon_core;

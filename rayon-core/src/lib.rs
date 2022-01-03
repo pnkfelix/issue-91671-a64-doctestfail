@@ -1,9 +1,40 @@
+#![feature(lang_items)]
+#![feature(alloc_error_handler)]
 #![no_std]
 
 extern crate alloc;
 use alloc::boxed::Box;
 
 mod std {
+    use core::panic::PanicInfo;
+
+    #[panic_handler]
+    fn panic(_info: &PanicInfo) -> ! {
+        loop {}
+    }
+
+    #[lang = "eh_personality"]
+    extern "C" fn eh_personality() {}
+
+struct FakeAllocator;
+
+#[global_allocator]
+static FAKE_ALLOC: FakeAllocator = FakeAllocator;
+
+use alloc::alloc::{GlobalAlloc, Layout};
+
+unsafe impl GlobalAlloc for FakeAllocator {
+    unsafe fn alloc(&self, _: Layout) -> *mut u8 { loop { } }
+    unsafe fn dealloc(&self, _: *mut u8, _: Layout) { loop { } }
+}
+
+
+
+    #[alloc_error_handler]
+    fn my_example_handler(layout: core::alloc::Layout) -> ! {
+        loop { }
+    }
+
     pub(crate) mod io {
         use crate::Box;
         pub use crate::alloc::fmt;
