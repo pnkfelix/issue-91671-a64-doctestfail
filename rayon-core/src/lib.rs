@@ -106,12 +106,6 @@ mod core {
     pub mod ptr {
         use crate::core::marker::Sized;
 
-        #[repr(transparent)]
-        #[rustc_layout_scalar_valid_range_start(1)]
-        pub struct Unique<T: ?Sized> {
-            pointer: *const T,
-        }
-
         #[lang = "drop_in_place"]
         #[allow(unconditional_recursion)]
         pub unsafe fn drop_in_place<T: ?Sized>(to_drop: *mut T) {
