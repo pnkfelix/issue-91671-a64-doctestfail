@@ -1,12 +1,6 @@
 #![feature(lang_items)]
-#![feature(alloc_error_handler)]
 #![feature(fundamental)]
-#![feature(rustc_attrs)]
-#![feature(negative_impls)]
 #![feature(auto_traits)]
-#![feature(extern_types)]
-#![feature(const_trait_impl)]
-#![feature(unboxed_closures)]
 #![feature(no_core)]
 #![no_core]
 
@@ -30,9 +24,9 @@ mod core {
 
         #[lang = "sized"]
         #[fundamental]
-        #[rustc_specialization_trait]
         pub trait Sized { }
     }
+
     pub mod result {
         pub enum Result<T, E> {
             #[lang = "Ok"]
@@ -64,8 +58,6 @@ mod std {
         }
     }
 }
-
-pub trait Trait { }
 
 fn registry_new(mut builder: impl Sized) -> Result<(), BuildError> { loop { } }
 
@@ -100,5 +92,7 @@ fn id<T>(x: T) -> T { x }
 pub struct BuildError {
     kind: std::io::Error,
 }
+
+pub trait Trait { }
 
 pub fn build<'a>(_: &'a ()) -> Result<tp::Pool, &'a dyn Trait> { loop { } }
