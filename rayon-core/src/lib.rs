@@ -1,7 +1,6 @@
 #![feature(lang_items)]
 #![feature(alloc_error_handler)]
 #![feature(fundamental)]
-// #![feature(ptr_internals)]
 #![feature(rustc_attrs)]
 #![feature(negative_impls)]
 #![feature(auto_traits)]
@@ -10,8 +9,6 @@
 #![feature(unboxed_closures)]
 #![feature(no_core)]
 #![no_core]
-// #![rustc_on_unimplemented)]
-// extern crate core as the_core;
 
 mod core {
     pub mod any {
@@ -19,7 +16,6 @@ mod core {
             t: u64,
         }
 
-        // pub use the_core::any::Any;
         pub trait Any: 'static {
             fn type_id(&self) -> TypeId;
         }
@@ -29,7 +25,6 @@ mod core {
 
         #[lang = "clone"]
         #[rustc_diagnostic_item = "Clone"]
-        // #[rustc_trivial_field_reads]
         pub trait Clone: Sized {
             #[must_use = "cloning is often expensive and is not expected to have side effects"]
             fn clone(&self) -> Self;
@@ -41,7 +36,6 @@ mod core {
         }
     }
     pub mod convert {
-        // pub use the_core::convert::From;
         use crate::core::marker::Sized;
 
         pub trait From<T>: Sized {
@@ -163,7 +157,6 @@ mod core {
             formatter: fn(&Opaque, &mut Formatter<'_>) -> Result,
         }
 
-        // #[derive(Copy, Clone)]
         pub struct Arguments<'a> {
             pieces: &'a [&'static str],
             fmt: Option<&'a [rt::v1::Argument]>,
@@ -174,13 +167,11 @@ mod core {
             pub mod v1 {
                 pub use self::Argument as ArgumentV1;
 
-                // #[derive(Copy, Clone)]
                 pub struct Argument {
                     pub position: usize,
                     pub format: FormatSpec,
                 }
 
-                // #[derive(Copy, Clone)]
                 pub struct FormatSpec {
                     pub fill: char,
                     pub align: Alignment,
@@ -190,7 +181,6 @@ mod core {
                 }
 
                 /// Possible alignments that can be requested as part of a formatting directive.
-                // #[derive(Copy, Clone, PartialEq, Eq)]
                 pub enum Alignment {
                     /// Indication that contents should be left-aligned.
                     Left,
@@ -203,7 +193,6 @@ mod core {
                 }
 
                 /// Used by [width](https://doc.rust-lang.org/std/fmt/#width) and [precision](https://doc.rust-lang.org/std/fmt/#precision) specifiers.
-                // #[derive(Copy, Clone)]
                 pub enum Count {
                     /// Specified with a literal number, stores the value
                     Is(usize),
@@ -256,7 +245,6 @@ mod core {
         impl<T: ?Sized> !Sync for *const T {}
         impl<T: ?Sized> !Sync for *mut T {}
 
-        // pub use the_core::marker::Sized;
         #[lang = "sized"]
         #[rustc_on_unimplemented(
             message = "the size for values of type `{Self}` cannot be known at compilation time",
@@ -426,9 +414,7 @@ mod core {
     pub mod panic {
         use crate::core::option::Option;
 
-        // pub use the_core::panic::PanicInfo;
         #[lang = "panic_info"]
-        // #[derive(Debug)]
         pub struct PanicInfo<'a> {
             payload: &'a (dyn crate::core::any::Any + crate::core::marker::Send),
             message: Option<&'a crate::core::fmt::Arguments<'a>>,
@@ -436,7 +422,6 @@ mod core {
         }
 
         #[lang = "panic_location"]
-        // #[derive(Copy, Clone, Debug, Eq, Hash, Ord, PartialEq, PartialOrd)]
         pub struct Location<'a> {
             file: &'a str,
             line: u32,
@@ -444,7 +429,6 @@ mod core {
         }
     }
     pub mod ptr {
-        // pub use the_core::ptr::Unique;
         use crate::core::marker::Sized;
 
         #[repr(transparent)]
@@ -457,19 +441,13 @@ mod core {
         #[lang = "drop_in_place"]
         #[allow(unconditional_recursion)]
         pub unsafe fn drop_in_place<T: ?Sized>(to_drop: *mut T) {
-            // Code here does not matter - this is replaced by the
-            // real drop glue by the compiler.
-
-            // SAFETY: see comment above
             unsafe { drop_in_place(to_drop) }
         }
     }
 
     pub mod result {
-        // pub use the_core::result::Result;
         use crate::core::ops::function::FnOnce;
 
-        // #[derive(Copy, PartialEq, PartialOrd, Eq, Ord, Debug, Hash)]
         #[must_use = "this `Result` may be an `Err` variant, which should be handled"]
         #[rustc_diagnostic_item = "Result"]
         pub enum Result<T, E> {
